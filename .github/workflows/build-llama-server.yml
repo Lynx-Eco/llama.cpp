@@ -79,7 +79,7 @@ jobs:
           popd >/dev/null
           echo "artifact_path=${ARTIFACT_DIR}/${ARTIFACT_NAME}" >> "$GITHUB_OUTPUT"
           echo "sha_path=${ARTIFACT_DIR}/${BIN_NAME}.sha256" >> "$GITHUB_OUTPUT"
-          echo "meta_path=${VERSION_JSON}" >> "$GITHUB_OUTPUT"
+          echo "meta_path=${ARTIFACT_DIR}/${VERSION_JSON}" >> "$GITHUB_OUTPUT"
 
       - name: Upload artifacts to release
         uses: svenstaro/upload-release-action@v2
