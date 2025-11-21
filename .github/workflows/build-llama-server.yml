@@ -44,12 +44,12 @@ jobs:
           BIN_PATH="${BUILD_DIR}/bin/${BIN_NAME}"
           ARTIFACT_DIR="dist"
           ARTIFACT_NAME="llama-server-macos-arm64-static.tar.gz"
-          VERSION_JSON="${ARTIFACT_DIR}/metadata.json"
 
           mkdir -p "$ARTIFACT_DIR"
           cp "$BIN_PATH" "$ARTIFACT_DIR/"
           pushd "$ARTIFACT_DIR" >/dev/null
           shasum -a 256 "$BIN_NAME" > "${BIN_NAME}.sha256"
+          VERSION_JSON="metadata.json"
           cat > "$VERSION_JSON" <<'EOF'
           {
             "arch": "arm64",
