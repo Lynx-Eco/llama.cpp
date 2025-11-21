@@ -51,28 +51,28 @@ jobs:
           pushd "$ARTIFACT_DIR" >/dev/null
           shasum -a 256 "$BIN_NAME" > "${BIN_NAME}.sha256"
           cat > "$VERSION_JSON" <<'EOF'
-{
-  "arch": "arm64",
-  "os": "macos",
-  "build_type": "Release",
-  "static": true,
-  "metal": true,
-  "metal_embed": true,
-  "accelerate": true
-}
-EOF
+          {
+            "arch": "arm64",
+            "os": "macos",
+            "build_type": "Release",
+            "static": true,
+            "metal": true,
+            "metal_embed": true,
+            "accelerate": true
+          }
+          EOF
           # include tag and upstream commit for traceability
           /usr/bin/python3 - <<'PY'
-import json, os, subprocess, datetime
-meta_path = os.path.join("metadata.json")
-with open(meta_path) as f:
-    data = json.load(f)
-data["tag"] = os.environ.get("GITHUB_REF_NAME", "manual")
-data["commit"] = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()
-data["created_at"] = datetime.datetime.utcnow().isoformat() + "Z"
-with open(meta_path, "w") as f:
-    json.dump(data, f, indent=2)
-PY
+          import json, os, subprocess, datetime
+          meta_path = os.path.join("metadata.json")
+          with open(meta_path) as f:
+              data = json.load(f)
+          data["tag"] = os.environ.get("GITHUB_REF_NAME", "manual")
+          data["commit"] = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()
+          data["created_at"] = datetime.datetime.utcnow().isoformat() + "Z"
+          with open(meta_path, "w") as f:
+              json.dump(data, f, indent=2)
+          PY
           tar -czf "$ARTIFACT_NAME" "$BIN_NAME" "$(basename "$VERSION_JSON")"
           popd >/dev/null
           echo "artifact_path=${ARTIFACT_DIR}/${ARTIFACT_NAME}" >> "$GITHUB_OUTPUT"
